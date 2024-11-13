@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа - JavaScript</title>
+</head>
+<body>
+
+    <h1>Лабораторная работа - JavaScript</h1>
+
+   
+    <div class="section">
+        <h2>Возведение в степень</h2>
+        <label for="pow-x">Введите x:</label>
+        <input type="number" id="pow-x">
+        <label for="pow-n">Введите n:</label>
+        <input type="number" id="pow-n" min="1">
+        <button id="pow-btn">Рассчитать</button>
+        <p id="pow-result"></p>
+    </div>
+
+
+    <div class="section">
+        <h2>Нахождение НОД</h2>
+        <label for="gcd-a">Введите a:</label>
+        <input type="number" id="gcd-a" min="0">
+        <label for="gcd-b">Введите b:</label>
+        <input type="number" id="gcd-b" min="0">
+        <button id="gcd-btn">Рассчитать</button>
+        <p id="gcd-result"></p>
+    </div>
+
+    
+    <div class="section">
+        <h2>Наименьшая цифра числа</h2>
+        <label for="minDigit-x">Введите число x:</label>
+        <input type="number" id="minDigit-x" min="0">
+        <button id="minDigit-btn">Найти</button>
+        <p id="minDigit-result"></p>
+    </div>
+
+    
+    <div class="section">
+        <h2>Множественное число</h2>
+        <label for="pluralize-n">Введите количество записей n:</label>
+        <input type="number" id="pluralize-n" min="0">
+        <button id="pluralize-btn">Вывести результат</button>
+        <p id="pluralize-result"></p>
+    </div>
+     
+     <div class="section">
+        <h2>Число Фибоначчи</h2>
+        <label for="fibb-n">Введите n:</label>
+        <input type="number" id="fibb-n" min="0" max="1000">
+        <button id="fibb-btn">Получить число Фибоначчи</button>
+        <p id="fibb-result"></p>
+    </div>
+    <script>
+        
+        document.getElementById('pow-btn').addEventListener('click', calculatePow);
+        document.getElementById('gcd-btn').addEventListener('click', calculateGcd);
+        document.getElementById('minDigit-btn').addEventListener('click', findMinDigit);
+        document.getElementById('pluralize-btn').addEventListener('click', pluralizeRecords);
+        document.getElementById('fibb-btn').addEventListener('click', getFibbNumber);
+
+        
+        function pow(x, n) {
+            let result = 1;
+            for (let i = 0; i < n; i++) {
+                result *= x;
+            }
+            return result;
+        }
+
+        function calculatePow() {
+            const x = parseFloat(document.getElementById('pow-x').value);
+            const n = parseInt(document.getElementById('pow-n').value);
+
+            if (isNaN(x) || isNaN(n)) {
+                document.getElementById('pow-result').textContent = 'не подходит условию';
+                return;
+            }
+
+            if (n < 1) {
+                document.getElementById('pow-result').textContent = 'не подходит условию';
+                return;
+            }
+
+            const result = pow(x, n);
+    
+            document.getElementById('pow-result').textContent = result;
+        }
+
+        // делитель
+        function gcd(a, b) {
+            while (b != 0) {
+                let temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+
+        function calculateGcd() {
+            const a = parseInt(document.getElementById('gcd-a').value);
+            const b = parseInt(document.getElementById('gcd-b').value);
+
+            if (isNaN(a) || isNaN(b)) {
+                document.getElementById('gcd-result').textContent = 'не подходит условию';
+                return;
+            }
+
+            const result = gcd(a, b);
+            document.getElementById('gcd-result').textContent = result;
+        }
+        // меньшая
+        function minDigit(x) {
+            let min = 9; 
+            while (x > 0) {
+                let digit = x % 10; 
+                if (digit < min) {
+                    min = digit; 
+                }
+                x = Math.floor(x / 10); 
+            }
+            return min;}
+        
+
+        function findMinDigit() {
+            const x = parseInt(document.getElementById('minDigit-x').value);
+
+            if (isNaN(x)) {
+                document.getElementById('minDigit-result').textContent = 'не подходит условию';
+                return;
+            }
+
+            const result = minDigit(x);
+            document.getElementById('minDigit-result').textContent = result;
+        }
+
+        // запись
+        function pluralizeRecords() {
+            const n = parseInt(document.getElementById('pluralize-n').value);
+
+            if (isNaN(n)) {
+                document.getElementById('pluralize-result').textContent = 'не подходит условию';
+                return;
+            }
+
+            let form;
+            if (n % 10 == 1  && n%100!=11) {
+                form = 'была найдена '+n+' запись';
+            } else if (n % 10 >= 2 && n % 10 <= 4) {
+                form = 'были найдены '+n+' записи';
+            } else {
+                form = 'были найдены '+n+' записей';
+            }   
+
+            document.getElementById('pluralize-result').textContent = "В результате выполнения запроса было найдено "+String(form)};
+             // фибаначи
+        function fibb(n) {
+            if (n ==0) return 0;
+            if (n == 1) return 1;
+            let a = 0, b = 1, c;
+            for (let i = 2; i <= n; i++) {
+                c = a + b; 
+                a = b; 
+                b = c; 
+            }
+            return b; 
+        }
+
+        function getFibbNumber() {
+            const n = parseInt(document.getElementById('fibb-n').value);
+
+            if (isNaN(n),  n < 0,  n > 1000) {
+                document.getElementById('fibb-result').textContent = 'не подходит условию';
+                return;
+            }
+
+            const result = fibb(n);
+            document.getElementById('fibb-result').textContent = result;
+        }
+    </script>
+
+</body>
+</html>
